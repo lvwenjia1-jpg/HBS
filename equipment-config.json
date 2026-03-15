@@ -1,0 +1,369 @@
+{
+  "equipmentName": "Advanced Wafer Bonding Cell",
+  "equipmentCode": "WB-4000",
+  "lineMode": "Simulation",
+  "loadPorts": [
+    {
+      "id": "LP01",
+      "displayName": "LoadPort 01",
+      "vendor": "Brooks",
+      "protocol": "SECS/GEM Bridge",
+      "hasDoor": true,
+      "slotCount": 20,
+      "slotPitchMm": 12.0,
+      "waferDiameterMm": 300.0,
+      "waferAreaMm2": 70685.8,
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.11:5000",
+        "timeoutMs": 500
+      }
+    },
+    {
+      "id": "LP02",
+      "displayName": "LoadPort 02",
+      "vendor": "Brooks",
+      "protocol": "SECS/GEM Bridge",
+      "hasDoor": true,
+      "slotCount": 20,
+      "slotPitchMm": 12.0,
+      "waferDiameterMm": 300.0,
+      "waferAreaMm2": 70685.8,
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.12:5000",
+        "timeoutMs": 500
+      }
+    },
+    {
+      "id": "LP03",
+      "displayName": "LoadPort 03",
+      "vendor": "Brooks",
+      "protocol": "SECS/GEM Bridge",
+      "hasDoor": true,
+      "slotCount": 20,
+      "slotPitchMm": 12.0,
+      "waferDiameterMm": 300.0,
+      "waferAreaMm2": 70685.8,
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.13:5000",
+        "timeoutMs": 500
+      }
+    },
+    {
+      "id": "LP04",
+      "displayName": "LoadPort 04",
+      "vendor": "Brooks",
+      "protocol": "SECS/GEM Bridge",
+      "hasDoor": true,
+      "slotCount": 20,
+      "slotPitchMm": 12.0,
+      "waferDiameterMm": 300.0,
+      "waferAreaMm2": 70685.8,
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.14:5000",
+        "timeoutMs": 500
+      }
+    }
+  ],
+  "robots": [
+    {
+      "id": "RB01",
+      "displayName": "Robot Arm 01",
+      "vendor": "Rorze",
+      "protocol": "ASCII",
+      "protocolProfile": {
+        "protocolType": "RorzeAscii",
+        "initializeCommand": "INIT",
+        "homeCommand": "HOME",
+        "pickTemplate": "PICK {SOURCE} {SLOT} {SIDE}",
+        "placeTemplate": "PLACE {TARGET} {SLOT} {SIDE}",
+        "statusCommand": "STATUS?",
+        "ackToken": "OK",
+        "readyToken": "READY",
+        "busyToken": "BUSY",
+        "alarmToken": "ALARM",
+        "errorTokenPrefix": "ERR",
+        "pollIntervalMs": 80,
+        "stateTimeoutMs": 2200
+      },
+      "communication": {
+        "type": "SerialRs232",
+        "endpoint": "COM3",
+        "baudRate": 115200,
+        "timeoutMs": 300
+      },
+      "canPickFrontSide": true,
+      "canPickBackSide": true,
+      "motionProfile": {
+        "initialSpeed": 120.0,
+        "acceleration": 85.0,
+        "pressureKpa": -68.0
+      }
+    },
+    {
+      "id": "RB02",
+      "displayName": "Robot Arm 02",
+      "vendor": "Yaskawa",
+      "protocol": "Binary",
+      "protocolProfile": {
+        "protocolType": "YaskawaBinary",
+        "initializeCommand": "BOOT",
+        "homeCommand": "ORG",
+        "pickTemplate": "PK,{SOURCE},{SLOT},{SIDE}",
+        "placeTemplate": "PL,{TARGET},{SLOT},{SIDE}",
+        "statusCommand": "STS",
+        "ackToken": "ACK",
+        "readyToken": "READY",
+        "busyToken": "BUSY",
+        "alarmToken": "ALARM",
+        "errorTokenPrefix": "ERR",
+        "pollIntervalMs": 80,
+        "stateTimeoutMs": 2200
+      },
+      "communication": {
+        "type": "Usb",
+        "endpoint": "USB0::0x00A1::RB02",
+        "timeoutMs": 300
+      },
+      "canPickFrontSide": true,
+      "canPickBackSide": true,
+      "motionProfile": {
+        "initialSpeed": 140.0,
+        "acceleration": 92.0,
+        "pressureKpa": -70.0
+      }
+    }
+  ],
+  "chambers": [
+    {
+      "id": "CLN01",
+      "displayName": "Cleaning Chamber 01",
+      "vendor": "ACME",
+      "protocol": "Modbus TCP",
+      "type": "CleaningChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "IoPoint",
+        "openCommandPoint": "40001",
+        "closeCommandPoint": "40002",
+        "openConfirmPoint": "10001",
+        "closeConfirmPoint": "10002",
+        "faultPoint": "10003",
+        "timeoutMs": 2500,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.21:502",
+        "timeoutMs": 500
+      }
+    },
+    {
+      "id": "CLN02",
+      "displayName": "Cleaning Chamber 02",
+      "vendor": "ACME",
+      "protocol": "Modbus TCP",
+      "type": "CleaningChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "IoPoint",
+        "openCommandPoint": "40011",
+        "closeCommandPoint": "40012",
+        "openConfirmPoint": "10011",
+        "closeConfirmPoint": "10012",
+        "faultPoint": "10013",
+        "timeoutMs": 2500,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.22:502",
+        "timeoutMs": 500
+      }
+    },
+    {
+      "id": "DRY01",
+      "displayName": "Blow Chamber",
+      "vendor": "SMC",
+      "protocol": "Digital IO",
+      "type": "BlowChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "IoPoint",
+        "openCommandPoint": "DO1",
+        "closeCommandPoint": "DO2",
+        "openConfirmPoint": "DI1",
+        "closeConfirmPoint": "DI2",
+        "faultPoint": "DI3",
+        "timeoutMs": 2000,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "Usb",
+        "endpoint": "USB0::DRY01",
+        "timeoutMs": 250
+      }
+    },
+    {
+      "id": "ADH01",
+      "displayName": "Adhesive Coat Chamber",
+      "vendor": "Nordson",
+      "protocol": "Digital IO",
+      "type": "AdhesiveCoatingChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "IoPoint",
+        "openCommandPoint": "DO11",
+        "closeCommandPoint": "DO12",
+        "openConfirmPoint": "DI11",
+        "closeConfirmPoint": "DI12",
+        "faultPoint": "DI13",
+        "timeoutMs": 2000,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "Usb",
+        "endpoint": "USB0::ADH01",
+        "timeoutMs": 250
+      }
+    },
+    {
+      "id": "PLS01",
+      "displayName": "Plasma Activation Chamber",
+      "vendor": "EVG",
+      "protocol": "EtherCAT",
+      "type": "PlasmaActivationChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 2800,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.26:7006",
+        "timeoutMs": 600
+      }
+    },
+    {
+      "id": "ALG01",
+      "displayName": "Alignment Chamber",
+      "vendor": "SUSS",
+      "protocol": "Motion TCP",
+      "type": "AlignmentChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 2600,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.27:7007",
+        "timeoutMs": 600
+      }
+    },
+    {
+      "id": "BND01",
+      "displayName": "Direct Bond Chamber",
+      "vendor": "Custom",
+      "protocol": "C++ Bridge",
+      "type": "BondingChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 3000,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.31:7001",
+        "timeoutMs": 800
+      }
+    },
+    {
+      "id": "ANO01",
+      "displayName": "Anodic Bond Chamber",
+      "vendor": "EVG",
+      "protocol": "C++ Bridge",
+      "type": "AnodicBondingChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 3200,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.33:7003",
+        "timeoutMs": 800
+      }
+    },
+    {
+      "id": "EUT01",
+      "displayName": "Eutectic Bond Chamber",
+      "vendor": "EVG",
+      "protocol": "C++ Bridge",
+      "type": "EutecticBondingChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 3200,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.34:7004",
+        "timeoutMs": 800
+      }
+    },
+    {
+      "id": "DBD01",
+      "displayName": "Debonding Chamber",
+      "vendor": "Custom",
+      "protocol": "C++ Bridge",
+      "type": "DebondingChamber",
+      "hasDoor": true,
+      "doorControl": {
+        "controlType": "ProtocolCommand",
+        "timeoutMs": 3000,
+        "pollIntervalMs": 80
+      },
+      "communication": {
+        "type": "TcpIp",
+        "endpoint": "192.168.10.32:7002",
+        "timeoutMs": 800
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "group": "Robot",
+      "key": "DefaultAcceleration",
+      "value": "85 mm/s^2"
+    },
+    {
+      "group": "Robot",
+      "key": "StartupSpeed",
+      "value": "120 mm/s"
+    },
+    {
+      "group": "Vacuum",
+      "key": "PinPressure",
+      "value": "-68 kPa"
+    },
+    {
+      "group": "Safety",
+      "key": "DoorTimeout",
+      "value": "2.5 s"
+    },
+    {
+      "group": "Recipe",
+      "key": "BondingPlaceholder",
+      "value": "Enabled"
+    }
+  ]
+}

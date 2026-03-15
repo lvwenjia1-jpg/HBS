@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+  </ItemGroup>
+
+  <!-- C# 转接项目不引用 C++ 项目，运行时通过 SetNativePath 从 runtimes\x86 或 runtimes\x64 加载 -->
+  <!-- 先编译 C++ 桥接库的 x86 与 x64 两套，再复制到 runtimes 目录 -->
+  <PropertyGroup>
+    <AlibabaCloudRumDir>$(MSBuildProjectDirectory)\..\AlibabaCloudRum</AlibabaCloudRumDir>
+    <BridgeOutX86>$(AlibabaCloudRumDir)\$(Configuration)\</BridgeOutX86>
+    <BridgeOutX64>$(AlibabaCloudRumDir)\x64\$(Configuration)\</BridgeOutX64>
+    <RuntimesDir>$(OutputPath)runtimes</RuntimesDir>
+  </PropertyGroup>
+  <Target Name="BuildBridgeWin32" BeforeTargets="Build">
+    <MSBuild Projects="$(AlibabaCloudRumDir)\AlibabaCloudRum.vcxproj" Properties="Configuration=$(Configuration);Platform=Win32" Targets="Build" />
+  </Target>
+  <Target Name="BuildBridgeX64" BeforeTargets="Build">
+    <MSBuild Projects="$(AlibabaCloudRumDir)\AlibabaCloudRum.vcxproj" Properties="Configuration=$(Configuration);Platform=x64" Targets="Build" />
+  </Target>
+  <ItemGroup>
+    <_BridgeX86 Include="$(BridgeOutX86)AlibabaCloudRum.dll" Condition="Exists('$(BridgeOutX86)AlibabaCloudRum.dll')" />
+    <_BridgeX86 Include="$(BridgeOutX86)alibabacloud_rum.dll" Condition="Exists('$(BridgeOutX86)alibabacloud_rum.dll')" />
+    <_BridgeX86 Include="$(BridgeOutX86)libcurl.dll" Condition="Exists('$(BridgeOutX86)libcurl.dll')" />
+    <_BridgeX86 Include="$(BridgeOutX86)libgcc_s_dw2-1.dll" Condition="Exists('$(BridgeOutX86)libgcc_s_dw2-1.dll')" />
+    <_BridgeX64 Include="$(BridgeOutX64)AlibabaCloudRum.dll" Condition="Exists('$(BridgeOutX64)AlibabaCloudRum.dll')" />
+    <_BridgeX64 Include="$(BridgeOutX64)alibabacloud_rum.dll" Condition="Exists('$(BridgeOutX64)alibabacloud_rum.dll')" />
+    <_BridgeX64 Include="$(BridgeOutX64)libcurl.dll" Condition="Exists('$(BridgeOutX64)libcurl.dll')" />
+    <_BridgeX64 Include="$(BridgeOutX64)libgcc_s_dw2-1.dll" Condition="Exists('$(BridgeOutX64)libgcc_s_dw2-1.dll')" />
+  </ItemGroup>
+  <Target Name="CopyRuntimes" AfterTargets="Build">
+    <MakeDir Directories="$(RuntimesDir)\x86" />
+    <MakeDir Directories="$(RuntimesDir)\x64" />
+    <Copy SourceFiles="@(_BridgeX86)" DestinationFolder="$(RuntimesDir)\x86\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_BridgeX64)" DestinationFolder="$(RuntimesDir)\x64\" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

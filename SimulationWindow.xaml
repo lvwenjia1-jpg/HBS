@@ -1,0 +1,70 @@
+<Window x:Class="TestProject1.SimulationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pages="clr-namespace:TestProject1.Controls.Pages"
+        mc:Ignorable="d"
+        Title="Line Simulation / 整线仿真"
+        Width="1820"
+        Height="1080"
+        MinWidth="1440"
+        MinHeight="900"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterOwner"
+        Background="#EAF1F7">
+    <Window.Resources>
+        <SolidColorBrush x:Key="FrameBrush" Color="#C7D5E2" />
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="#366C97" />
+            <Setter Property="BorderBrush" Value="#28506F" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="0,0,10,10" />
+            <Setter Property="Padding" Value="12,7" />
+            <Setter Property="MinWidth" Value="112" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="Line Simulation / 整线仿真" FontSize="28" FontWeight="Bold" Foreground="#17314D" />
+                <TextBlock Margin="0,4,0,0" Text="{Binding VirtualLineStatusText}" Foreground="#527092" TextWrapping="Wrap" />
+                <WrapPanel Margin="0,10,0,0">
+                    <Border Margin="0,0,10,10" Background="#D9E8F7" CornerRadius="999" Padding="12,6">
+                        <TextBlock Text="{Binding SimulationStatusText}" FontWeight="SemiBold" />
+                    </Border>
+                    <Border Margin="0,0,10,10" Background="#EAF2FA" CornerRadius="999" Padding="12,6">
+                        <TextBlock Text="{Binding CurrentTransferSummary}" FontWeight="SemiBold" />
+                    </Border>
+                    <Border Margin="0,0,10,10" Background="#EAF2FA" CornerRadius="999" Padding="12,6">
+                        <TextBlock Text="{Binding ModuleSummaryText}" FontWeight="SemiBold" />
+                    </Border>
+                </WrapPanel>
+            </StackPanel>
+            <WrapPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="ToggleDetails_Click" Content="{Binding DetailToggleText, RelativeSource={RelativeSource AncestorType=Window}}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="ToggleWindowMode_Click" Content="{Binding WindowModeToggleText, RelativeSource={RelativeSource AncestorType=Window}}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ConnectAllCommand}" Content="{Binding Texts[connect_all]}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding HomeAllCommand}" Content="{Binding Texts[home_all]}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding OpenDoorsCommand}" Content="{Binding Texts[open_doors]}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding CloseDoorsCommand}" Content="{Binding Texts[close_doors]}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding RunRecipeCommand}" Content="{Binding Texts[run_recipe]}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding RunSchedulerCycleCommand}" Content="Scheduler Cycle" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ToggleVirtualLineCommand}" Content="{Binding VirtualLineActionText}" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Command="{Binding ResetCommand}" Content="{Binding Texts[reset_sim]}" />
+            </WrapPanel>
+        </DockPanel>
+
+        <pages:SimulationWorkspacePanel Grid.Row="1"
+                                        ShowSidebar="{Binding IsDetailPaneVisible, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        SurfaceMinHeight="1020" />
+    </Grid>
+</Window>
